@@ -1,29 +1,32 @@
 <script>
     import ImageEquipment from './ImageEquipment.svelte';
     let nameEquipment = '';
-    let equipmentData = {
-        alt : '',
-        src : ''
-    };
+    let equipmentData;
 
     function searchEquipment() {
         const equipments = [{
-            name : 'supino vertical',
-            image : 'supino-vertical.png'
+            alt : 'supino vertical',
+            src : 'supino-vertical.png'
         }, {
-            name : 'supino reto articulado',
-            image : 'supino-reto-articulado.jpg'
+            alt : 'supino reto articulado',
+            src : 'supino-reto-articulado.jpg'
         }, {
-            name : 'peck deck',
-            image : 'peck-deck.jpg'
+            alt : 'peck deck',
+            src : 'peck-deck.jpg'
+        }, {
+            alt : 'desenvolvimento máquina',
+            src : 'desenvolvimento-maquina.png'
+        }, {
+            alt : 'elevação lateral',
+            src : 'elevacao-lateral.png'
         }];
 
         const equipment = new RegExp(nameEquipment, 'i');
 
-        const findEquipment = equipments.filter(item => item.name.match(equipment)) || null;
-
-        equipmentData.alt = findEquipment ? findEquipment[0].name : null;
-        equipmentData.src = findEquipment ? `/img/${findEquipment[0].image}` : null;
+        equipmentData = equipments.filter(item => {
+            item.src = `/img/${item.src}`;
+            return item.alt.match(equipment);
+        }) || null;
     }
 </script>
 
@@ -32,4 +35,6 @@
     <input type="button" value="Pesquisar" on:click={searchEquipment} />
 </form>
 
-<ImageEquipment {...equipmentData} />
+{#if equipmentData}
+    <ImageEquipment {equipmentData} />
+{/if}
